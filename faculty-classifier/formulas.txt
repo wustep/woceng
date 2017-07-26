@@ -1,0 +1,4 @@
+Guess=
+"has(prof) + !has(adjunct) + !has(teaching) + !has(research)"
+
+=IF(AND(ISNUMBER(SEARCH("prof",LOWER(A2))),NOT(ISNUMBER(SEARCH("adjunct",LOWER(A2)))),NOT(ISNUMBER(SEARCH("teaching",LOWER(A2)))),NOT(ISNUMBER(SEARCH("research",LOWER(A2))))),"1","")

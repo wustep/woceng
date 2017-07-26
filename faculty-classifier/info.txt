@@ -1,0 +1,27 @@
+3 typical tenure track ranks
+- Assistant prof
+- Associate prof 			(promoted, most have tenured)
+- Full prof / Professor		(teminal tenure)
+
+
+Professor Emeritus - achieved tenure but is retired / not as involved
+Adjunct is none of the 3, NOT tenure track, temporarily
+
+Research Professor - often not tenured
+Extension Scientist / Advisor - NOT
+Visiting Assistant Professor - NOT tenure   in that department, might have tenure somewhere else
+Institute Professor - maybe? probably
+Courtesy Faculty - "secondary home"
+Research Associate - nope
+Teaching Assistant Professor - prob not
+Teaching Professor - prob not
+of practice - prob not tenure
+ 
+Need 3 classifications
+1- Tenured and or tenure-track faculty (Assisatnt, Associate, and Full)
+2- Non-tenure track faculty (Lecturers, etc....)
+3- Support staff (Admiinistrative Assistant, Lab Supervisors, etc....)
+
+blanks / N/A are automatically classified as (4) before going into the classifier to make things easier
+
+https://www.wikiwand.com/en/Academic_ranks_in_the_United_States
