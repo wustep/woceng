@@ -40,29 +40,45 @@ def getDataset(filename, training=0): # Returns csv in array if training=0, othe
 				dataset.append(row[0])
 	return dataset
 
-print("#### Training Set ####")
-training = getDataset("training-data.csv", 1)
+print("\r\n#### Training Set ####")
+training = getDataset("data/training-data.csv", 1)
+print("Training on " + str(len(training)) + " samples from training-data")
 cl = NaiveBayesClassifier(training)
-print("Trained on " + str(len(training)) + " samples from training-data")
+print("Trained on training-data")
 
-print("#### Testing Set ####")
-test = getDataset("test-data.csv", 1)
+print("\r\n#### Testing Set ####")
+test = getDataset("data/test-data.csv", 1)
 print("Testing on " + str(len(test)) + " samples from test-data")
 print ("Accuracy: {0}".format(cl.accuracy(test)))
+print("Testing on test-data")
 cl.update(test)
 print("Trained on test-data")
 
-print("#### Features ####")
+print("\r\n#### Features ####")
 print(cl.show_informative_features(15))
 
-#print ("#### Random Tests ####")
-#random = getDataset("partial-randomized-faculty-data.csv", 0)
-#for row in random:
-#	randomTitle = row.lower()
-#	result = 4
-#	if (len(randomTitle) >= 3):
-#		result = TextBlob(randomTitle, classifier=cl).classify()
-#	print("'" + randomTitle + "': " + str(result))
+print("#### Random Tests ####")
+random = getDataset("data/partial-randomized-faculty-data.csv", 0)
+print("Classifying " + str(len(test)) + " samples from partial-randomized-faculty-data")
+randomResults = [0, 0, 0, 0]
+averageProb = 0
+totalChecked = 0
+with open("data/partial-randomized-faculty-data-out.csv", "w", newline='') as outputFile:
+	randomOut = csv.writer(outputFile, delimiter=",", quotechar='"')
+	for row in random:
+		randomTitle = row.lower()
+		result = 4
+		if (len(randomTitle) >= 3):
+			prob_dist = cl.prob_classify(randomTitle)
+			result = prob_dist.max()
+			averageProb += round(prob_dist.prob(result), 5)
+			totalChecked += 1
+		randomOut.writerow([row, result])
+		randomResults[int(result)-1] += 1
+print("Completed partial-randomized-faculty-data classification")
+print("Classes (1): " + str(randomResults[0]) + ", (2): " + str(randomResults[1]) + ", (3): " + str(randomResults[2]) + ", (4): " + str(randomResults[3]))
+if (totalChecked >= 0): 
+	print("Average Certainty: " + str(averageProb / totalChecked))
 
 print("\r\n#### Input Test ####")
 prompt = ""
