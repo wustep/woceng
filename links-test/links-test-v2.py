@@ -2,9 +2,11 @@ import urllib.request, json, csv
 from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
 
-lineNum = 1
-restartAt = 1 # Set to start at a specific line instead... useful for uncaught errors or interrupts
-# leave newline
+lineNum = 2
+restartAt = 2 # Set to start at a specific line instead... useful for uncaught errors or interrupts
+# leave newline on end of out file though when restarting
+inFile = "in.csv"
+outFile = "out2.csv"
 
 def checkLink(link):
     result = "N"
@@ -44,17 +46,16 @@ def checkLink(link):
 # "Not Found" means the words "Not found" or "404" were found on the page
 # Y means probably legit
 
-read = open("in.csv", "r").read().split('\n')
-with open("out.csv", "a", newline='') as file:
-    out = csv.writer(file)
-    for line in read:
-        if (restartAt <= lineNum): # if Restart is set, skip till you get there..
-            strip = line.split(',')
-            left = strip[0].replace('"','')
-            leftPrint = checkLink(left)
-            file.write(left + "," + leftPrint + "\n")
-            if (leftPrint != "Y"):
-                print ("@" + str(lineNum) + ": " + leftPrint)
-            else:
-                print ("@" + str(lineNum) + ": OK")
-        lineNum += 1
+with open(inFile, 'r') as inputFile:
+    read = csv.reader(inputFile, delimiter=",", quotechar='"')
+    with open(outFile, "w", newline='') as outputFile:
+        out = csv.writer(outputFile, delimiter=",", quotechar='"')
+        for row in read:
+            if (restartAt <= lineNum): # if Restart is set, skip till you get there..
+                leftPrint = checkLink(row[0])
+                out.writerow([row[0], leftPrint])
+                if (leftPrint != "Y"):
+                    print ("@" + str(lineNum) + ": " + leftPrint)
+                else:
+                    print ("@" + str(lineNum) + ": OK")
+            lineNum += 1
