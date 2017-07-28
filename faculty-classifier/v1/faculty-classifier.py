@@ -33,11 +33,13 @@ def getDataset(filename, training=0): # Returns csv in array if training=0, othe
 	dataset = []
 
 	for row in c:
-		if (not(training) or len(row[0]) > 3): # Only train on non-blanks
-			if training:
+		if (len(row[0]) < 3) and not(training): # only train on non-blanks
+				dataset.append([""])
+		else:
+			if (training):
 				dataset.append((row[0].lower(), row[1]))
 			else:
-				dataset.append(row[0])
+				dataset.append([row[0]])
 	return dataset
 
 print("\r\n#### Training Set ####")
@@ -49,36 +51,38 @@ print("Trained on training-data")
 print("\r\n#### Testing Set ####")
 test = getDataset("data/test-data.csv", 1)
 print("Testing on " + str(len(test)) + " samples from test-data")
-print ("Accuracy: {0}".format(cl.accuracy(test)))
-print("Testing on test-data")
+print("Tested on test-data completed with accuracy: {0}".format(cl.accuracy(test)) + ", now training")
 cl.update(test)
 print("Trained on test-data")
 
 print("\r\n#### Features ####")
 print(cl.show_informative_features(15))
 
-print("#### Random Tests ####")
-random = getDataset("data/partial-randomized-faculty-data.csv", 0)
-print("Classifying " + str(len(test)) + " samples from partial-randomized-faculty-data")
-randomResults = [0, 0, 0, 0]
-averageProb = 0
-totalChecked = 0
-with open("data/partial-randomized-faculty-data-out.csv", "w", newline='') as outputFile:
-	randomOut = csv.writer(outputFile, delimiter=",", quotechar='"')
-	for row in random:
-		randomTitle = row.lower()
-		result = 4
-		if (len(randomTitle) >= 3):
-			prob_dist = cl.prob_classify(randomTitle)
-			result = prob_dist.max()
-			averageProb += round(prob_dist.prob(result), 5)
-			totalChecked += 1
-		randomOut.writerow([row, result])
-		randomResults[int(result)-1] += 1
-print("Completed partial-randomized-faculty-data classification")
-print("Classes (1): " + str(randomResults[0]) + ", (2): " + str(randomResults[1]) + ", (3): " + str(randomResults[2]) + ", (4): " + str(randomResults[3]))
-if (totalChecked >= 0): 
-	print("Average Certainty: " + str(averageProb / totalChecked))
+print("\r\n#### Full Classification ####")
+with open("data/partial-randomized-faculty-data.csv", 'r') as inputFile:
+	random = csv.reader(inputFile, delimiter=",", quotechar='"')
+	print("Classifying partial-randomized-faculty-data")
+	with open("data/partial-randomized-faculty-data-out.csv", "w", newline='') as outputFile:
+		randomResults = [0, 0, 0, 0]
+		averageProb = 0
+		totalChecked = 0
+		randomOut = csv.writer(outputFile, delimiter=",", quotechar='"')
+		for row in random:
+			result = 4
+			if (len(row) > 0 and len(row[0]) >= 3):
+				randomTitle = row[0].lower()
+				prob_dist = cl.prob_classify(randomTitle)
+				result = prob_dist.max()
+				prob = round(prob_dist.prob(result), 3)
+				print("'" + randomTitle + "': " + result + " @ " + str(prob))
+				averageProb += prob
+				totalChecked += 1
+			randomOut.writerow([row, result])
+			randomResults[int(result)-1] += 1
+	print("Completed partial-randomized-faculty-data classification")
+	print("Classes (1): " + str(randomResults[0]) + ", (2): " + str(randomResults[1]) + ", (3): " + str(randomResults[2]) + ", (4): " + str(randomResults[3]))
+	if (totalChecked >= 0): 
+		print("Average Certainty: " + str(averageProb / totalChecked))
 
 print("\r\n#### Input Test ####")
 prompt = ""
@@ -86,4 +90,4 @@ while not(prompt == "stop"):
 	prompt = input("Position: ")
 	word = prompt.lower()
 	res = TextBlob(word, classifier=cl).classify()
-	print("'" + word + "': " + str(res) + " ("+ interpret(res) + ")")
+	print("'" + word + "': " + str(res) + " ("+ interpret(res) + ")\r\n")
