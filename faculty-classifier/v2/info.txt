@@ -1,0 +1,11 @@
+A: Position Title(s)
+B: Faculty Designation	(1 = Tenure-track faculty, 2 = Non-tenure-track faculty, 3 = Not faculty)
+C: Staff Designation	(1 = Administrator, 2 = Staff, 3 = Other)
+
+B:
+(1) Professor, Professor Emeritus, Associate Professor, Assistant Professor
+(2) Adjunct Professor, Teaching Assistant, Courtesy Faculty, Visiting Assistant Professor
+
+C:
+(1) Administrators are Department Heads, Chairs, Deans, Provosts, and Presidents 
+(2) Coordinators and Directors are usually staff
