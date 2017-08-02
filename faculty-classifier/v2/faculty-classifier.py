@@ -35,19 +35,20 @@ def getDataset(filename, column=1, training=0):
 	next(c)
 	
 	dataset = []
-	next(c, None)  # skip the headers
+
 	for row in c:
-		if (len(row[0]) < 3): # Invalid input
-			if not(training): # Don't bother if it's training
-				dataset.append([""]) 
-		else:
-			if (training):
-				res = row[column]
-				if (res == ""): # 3 means NOT staff / faculty. These are blank in training data for readability
-					res = 3
-				dataset.append([row[0], res]) 
+		if (row[0] != 'title'):
+			if (len(row[0]) < 3): # Invalid input
+				if not(training): # Don't bother if it's training
+					dataset.append([""]) 
 			else:
-				dataset.append([row[0]])
+				if (training):
+					res = row[column]
+					if (res == ""): # 3 means NOT staff / faculty. These are blank in training data for readability
+						res = 3
+					dataset.append([row[0], res]) 
+				else:
+					dataset.append([row[0]])
 	return (dataset)
 
 print("\r\n#### Training Set ####")
@@ -89,14 +90,12 @@ with open("data/partial-randomized-faculty-data.csv", 'r') as inputFile:
 		staffAverageProb = 0
 		totalChecked = 0
 		output = csv.writer(outputFile, delimiter=",", quotechar='"')
-		next(reader, None)  # skip the headers
 		for row in reader:
 			staffResult = 4
 			facultyResult = 4
-			line = ""
-			if (len(row) > 0):
-				line = row[0]
-			if (len(line) >= 3):
+			if (len(row) == 0):
+				row[0] = ""
+			elif (len(row[0]) >= 3):
 				title = row[0].lower()
 				facultyProbDist = facultyClassifier.prob_classify(title)
 				facultyResult = facultyProbDist.max()
@@ -109,12 +108,12 @@ with open("data/partial-randomized-faculty-data.csv", 'r') as inputFile:
 				facultyAverageProb += facultyProb
 				staffAverageProb += staffProb
 				totalChecked += 1
-			output.writerow([line, facultyResult, staffResult])
+			output.writerow([row[0], facultyResult, staffResult])
 			facultyResults[int(facultyResult)-1] += 1
 			staffResults[int(staffResult)-1] += 1
 	print("Completed partial-randomized-faculty-data classification")
-	print("Faculty classes (1): " + str(facultyResults[0]) + ", (2): " + str(facultyResults[1]) + ", (3): " + str(facultyResults[2]) + ", (4): " + str(facultyResults[3]))
-	print("Staff classes (1): " + str(staffResults[0]) + ", (2): " + str(staffResults[1]) + ", (3): " + str(staffResults[2]) + ", (4): " + str(staffResults[3]))
+	print("Faculty classes (1): " + str(facultyResult[0]) + ", (2): " + str(facultyResult[1]) + ", (3): " + str(facultyResult[2]) + ", (4): " + str(facultyResult[3]))
+	print("Staff classes (1): " + str(staffResult[0]) + ", (2): " + str(staffResult[1]) + ", (3): " + str(staffResult[2]) + ", (4): " + str(staffResult[3]))
 	if (totalChecked >= 0): 
 		print("Faculty Average Certainty: " + str(facultyAverageProb / totalChecked))
 		print("Staff Average Certainty: " + str(staffAverageProb / totalChecked))
