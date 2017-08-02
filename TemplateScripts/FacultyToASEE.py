@@ -10,6 +10,7 @@ class Staff:
 	dep = ""
 	email = ""
 	title = ""
+	phone = ""
 
 #open xlsx file
 print('Loading file...')
@@ -31,6 +32,7 @@ worksheet.write(rowNum, 5, "Faculty Gender")
 worksheet.write(rowNum, 6, "Faculty Ethnicity")
 worksheet.write(rowNum, 7, "Faculty picture link (when available)")
 worksheet.write(rowNum, 8, "Faculty Email")
+worksheet.write(rowNum, 9, "Phone Number")
 
 rowNum += 1
 
@@ -48,6 +50,7 @@ for row in range(2, 2500):
 	email = ws['E' + str(row)].value
 	gender = ws['K' + str(row)].value
 	picture = ws['H' + str(row)].value
+	phone = ws['F' + str(row)].value
 
 	
 	#when new school occurs
@@ -72,7 +75,12 @@ for row in range(2, 2500):
 				if not elem.gender.strip():
 					worksheet.write(rowNum, 5, "None")
 				else:
-					worksheet.write(rowNum, 5, elem.gender)
+					if elem.gender.strip() is "F":
+						worksheet.write(rowNum, 5, "Female")
+					elif elem.gender.strip() is "X":
+						worksheet.write(rowNum, 5, "Female Name")
+					else:
+						worksheet.write(rowNum, 5, "Nondeterminable")
 				
 				if not elem.picture.strip():
 					worksheet.write(rowNum, 7, "None")
@@ -83,6 +91,11 @@ for row in range(2, 2500):
 					worksheet.write(rowNum, 8, "None")
 				else:
 					worksheet.write(rowNum, 8, elem.email)
+				
+				if not elem.phone.strip():
+					worksheet.write(rowNum, 9, "None")
+				else:
+					worksheet.write(rowNum, 9, elem.phone)
 				
 				rowNum += 1
 		SchoolInfo.clear()
@@ -97,6 +110,7 @@ for row in range(2, 2500):
 	staff.picture = str(picture)
 	staff.dep = str(dep)
 	staff.email = str(email)
+	staff.phone = str(phone)
 	
 	if dep not in SchoolInfo:
 		SchoolInfo[dep] = []
