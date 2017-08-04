@@ -39,6 +39,8 @@ def checkLink(link):
             result = "InvalidURL"
         except NameError as e:
             result = "NameError"
+        except:
+            result = "UnexpectedError: " + sys.exec.info()[0]
         else:
             urlCode = openLink.getcode()
             if (urlCode == 200):
@@ -61,29 +63,33 @@ with open(inFile, 'r') as inputFile:
         out = csv.writer(outputFile, delimiter=",", quotechar='"')
         for row in read:
             if (restartAt <= lineNum): # if Restart is set, skip till you get there..
+                line = ""
                 gender = ""
                 ethnicity = ""
-                leftPrint = checkLink(row[0])
-                if (leftPrint == "OK"):
-                    files = [
-                        ('api_key', faceAPIKey),
-                        ('api_secret', faceAPISecret),
-                        ('image_url', row[0]),
-                        ('return_landmark', '1'),
-                        ('return_attributes', 'gender,ethnicity')
-                    ]
-                    res = requests.post("https://api-us.faceplusplus.com/facepp/v3/detect", data=files, headers={'User-Agent' : 'py'})
-                    if res.status_code == 200:
-                        d = json.loads(res.content)
-                        if (len(d["faces"]) > 0):
-                            if (len(d["faces"]) > 1):
-                                print("@" + str(lineNum) + "More than 1 face found")
-                            gender = (d["faces"][0]["attributes"]["gender"]["value"])
-                            ethnicity = (d["faces"][0]["attributes"]["ethnicity"]["value"])
-                        else:  
-                            leftPrint = "Face++ Face Not Found"
-                    else: 
-                        leftPrint = "Face++ " + str(res.status_code)
-                    out.writerow([row[0], leftPrint, gender, ethnicity])
+                leftPrint = "BLANK"
+                if (len(row) > 0):
+                    line = row[0]
+                    leftPrint = checkLink(line)
+                    if (leftPrint == "OK"):
+                        files = [
+                            ('api_key', faceAPIKey),
+                            ('api_secret', faceAPISecret),
+                            ('image_url', row[0]),
+                            ('return_landmark', '1'),
+                            ('return_attributes', 'gender,ethnicity')
+                        ]
+                        res = requests.post("https://api-us.faceplusplus.com/facepp/v3/detect", data=files, headers={'User-Agent' : 'py'})
+                        if res.status_code == 200:
+                            d = json.loads(res.content)
+                            if (len(d["faces"]) > 0):
+                                if (len(d["faces"]) > 1):
+                                    print("@" + str(lineNum) + "More than 1 face found")
+                                gender = (d["faces"][0]["attributes"]["gender"]["value"])
+                                ethnicity = (d["faces"][0]["attributes"]["ethnicity"]["value"])
+                            else:  
+                                leftPrint = "Face++ Face Not Found"
+                        else: 
+                            leftPrint = "Face++ " + str(res.status_code)
+                out.writerow([line, leftPrint, gender, ethnicity])
                 print ("@" + str(lineNum) + ": " + leftPrint + " " + gender + " " + ethnicity)
             lineNum += 1
