@@ -6,6 +6,7 @@ PI: Dr. Monica Cox
 
 ### link checker
 (Python 3.6) Batch process links and report if their status (Y or HTTPError/URLError/InvalidURL/etc.) 
+link-test-and-analyze runs the links through the [Face++ API](https://www.faceplusplus.com/), which returns gender and ethnicity analysis
 
 ### faculty-classifier
 
