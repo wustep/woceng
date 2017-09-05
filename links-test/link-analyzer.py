@@ -14,11 +14,11 @@ except:
     print("API_SECRET=YOUR_API_SECRET_HERE")
     exit()
 
-lineNum = 2
+lineNum = 1
 restartAt = 2 # Set to start at a specific line instead... useful for uncaught errors or interrupts
 # leave newline on end of out file though when restarting
-inFile = "in.csv"
-outFile = "out2.csv"
+inFile = input("Input file name?: ")
+outFile = input("Output file name?: ")
 
 def checkLink(link):
     result = "N"

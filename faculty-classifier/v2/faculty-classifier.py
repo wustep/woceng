@@ -78,11 +78,14 @@ print(facultyClassifier.show_informative_features(15))
 print("Staff Classifier")
 print(staffClassifier.show_informative_features(15))
 
+inputFileName = input('Enter input file name (e.g. data/partial-randomized-faculty-data.csv):');
+outputFileName = input('Enter output file name:');
+
 print("\r\n#### Full Classification ####")
-with open("data/partial-randomized-faculty-data.csv", 'r') as inputFile:
+with open(inputFileName, 'r') as inputFile:
 	reader = csv.reader(inputFile, delimiter=",", quotechar='"')
 	print("Classifying partial-randomized-faculty-data")
-	with open("data/partial-randomized-faculty-data-out.csv", "w", newline='') as outputFile:
+	with open(outputFileName, "w", newline='') as outputFile:
 		facultyResults = [0, 0, 0, 0]
 		facultyAverageProb = 0
 		staffResults = [0, 0, 0, 0]

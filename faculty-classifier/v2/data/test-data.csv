@@ -20,11 +20,11 @@ Associate Professor ,1,
 Associate Professor,1,
 ADJUNCT INSTRUCTIONAL FACULTY,2,
 Full-Time Faculty,2,
-Retired,1,
+Retired,,
 Lecturer,2,
 CSE Intermittent Lecturer,2,
  Adjunct,2,
-Professor & Director Center for Faculty Excellence,1,
+Professor & Director Center for Faculty Excellence,1,2
 Noah Harding Professor of Computer Science,1,
 Senior Lecturer,2,
 Student Services Coordinator and Student Adviser,,2
@@ -60,7 +60,7 @@ Wilson-Cook Professor in Engineering Design,1,
 "Professor, TATM",1,
 Instructor,2,
 ECE Associate Chair for Undergraduate Programs Senior Lecturer & Research Assistant Professor (ECE),2,1
-Administrative Assistant,2,
+Administrative Assistant,,2
 PROFESSOR,1,
 Assistant Professor,1,
 Adjunct Professor,2,
@@ -99,7 +99,7 @@ Senior Accountant,,2
 associate Professor,1,
 Vice Provost for Academic Strategy,,1
 Alumni Constituent Relations,,2
-Academic Specialist; Academic Advisor,,1
+Academic Specialist; Academic Advisor,,2
 Assitant Professor,1,
 Lecturer,2,
 Lecturer,2,
