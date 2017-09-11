@@ -33,14 +33,10 @@ def checkLink(link):
             result = "ValueError"
         except TimeoutError as e:
             result = "TimeoutError"
-        except SSLError as e:
-            result = "SSLError"
-        except InvalidURL as e:
-            result = "InvalidURL"
         except NameError as e:
             result = "NameError"
         except:
-            result = "UnexpectedError: " + sys.exec.info()[0]
+            result = "UnexpectedError"
         else:
             urlCode = openLink.getcode()
             if (urlCode == 200):
