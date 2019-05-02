@@ -19,4 +19,4 @@ The goal of these scripts was to supplement this study, by **identifying viable 
 
 ## TemplateScripts
 
-These scripts, written by @jalacardio helped clean up the original Excel files, using IPEDs files 
+These scripts, written by @jalacardio helped clean up the original Excel files, using IPEDs codes. 
